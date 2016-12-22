@@ -1,0 +1,101 @@
+FORMAT: 1A
+HOST: http://localhost:3000
+
+# test cutting-app API
+
+## General Errors
+
+Http Code | Error Type           |  Error                             | Details
+---------:| -------------------- |  --------------------------------- | ----------------
+404       | Not Found            |  Page Not Found                    |
+400       | Bad request          |  Not enough incoming parameters    |
+500       | Internal error       |  Internal server error             |
+
+# Data Structures
+
+## GenericError
++ error:`Some error description.` (string)
+
+## CreateImage
++ horizontal_parts: 3 (number, optional)
++ vertical_parts: 3 (number, optional)
++ file: `im.jpg` (required) - file in multipart/form-data
++ file2: `im2.jpg` (required) - file in multipart/form-data
+
+## CreateImageRes
++ _id: `5818b01a13187de020871b63` (string)
++ totalParts: 4 (number)
++ originalName: Others (string)
++ folderName: test (string)
++ extension: jpg (string)
++ createdAt: `2016-11-01T13:09:14.000Z` (string)
+
+## CreateImageShort
++ _id: `5818b01a13187de020871b63` (string)
++ totalParts: 4 (number)
++ originalName: Others (string)
++ extension: jpg (string)
++ createdAt: `2016-11-01T13:09:14.000Z` (string)
+
+## GetByIdImageRes
++ _id: `5818b01a13187de020871b63` (string)
++ totalParts: 4 (number)
++ originalName: Others (string)
++ extension: jpg (string)
++ createdAt: `2016-11-01T13:09:14.000Z` (string)
++ files : `http://localhost:3000/image/585ba687dafed0076efc9def/8`, `http://localhost:3000/image/585ba687dafed0076efc9def/7` (array)
+
+
+# Group Images
+
+## Cut image on pieces [/image]
+
+### Create [POST]
+Cut image on pieces and save
+
++ Request (multipart/form-data)
+    + Attributes (CreateImage)
++ Response 200 (application/json)
+    + Attributes (array[CreateImageRes])
++ Response 400 (application/json)
+    + Attributes (GenericError)
+
+## Get all images [/image/list]
+
+### Get all [GET]
+Get all images
+
++ Request (application/json)
++ Response 200 (application/json)
+    + Attributes (array[CreateImageShort])
++ Response 400 (application/json)
+    + Attributes (GenericError)
+
+## Get By Id image [/image/{id}]
+
+### Get By Id [GET]
+Get image by id.
+
++ Parameters
+    + id - image _id
+
++ Request (application/json)
++ Response 200 (application/json)
+    + Attributes (GetByIdImageRes)
++ Response 400 (application/json)
+    + Attributes (GenericError)
+
+## Get part by id [/image/{id}/{partId}]
+
+### Get part by id [GET]
+Get images part by id.
+
++ Parameters
+    + id - image _id
+    + partId - images piece number
+
++ Request (application/json)
++ Response 200 (application/json)
++ Response 400 (application/json)
+    + Attributes (GenericError)
+
